@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect, useCallback, useRef } from "react";
+import React, { ChangeEvent, useState, useEffect, useCallback } from "react";
 import "./App.scss";
 import { Button, createStyles, MediaQuery } from "@mantine/core";
 import { Footer, Header, TextZone } from "./components";
@@ -7,6 +7,7 @@ import { RightArrow } from "./components/Arrows";
 import { franc } from 'franc';
 import { SourceLanguageCode } from "./types";
 import { ScaleLoader } from "react-spinners";
+import useTypeWriter from "./hooks/useTypeWriter";
 
 const SUPPORTED_INPUT_LANGUAGES = ['eng', 'fra'];
 
@@ -75,7 +76,7 @@ const useStyles = createStyles(theme => ({
 		transition: "all 150ms ease-in",
 
 		"&:hover": {
-			backgroundColor: theme.colors.brown[5],
+			backgroundColor: theme.colors.orange[4],
 			color: "white"
 		},
 
@@ -90,7 +91,7 @@ const useStyles = createStyles(theme => ({
 		zIndex: 10,
 		borderRadius: "50%",
 		padding: "0.25rem",
-		backgroundColor: theme.colors.green[1],
+		backgroundColor: theme.colors.green[5],
 	},
 }));
 
@@ -104,18 +105,13 @@ function App() {
 	const [sourceLanguage, setSourceLanguage] = useState<SourceLanguageCode>(SourceLanguageCode.Undetermined); // 'eng', 'fra', or 'und'
 	const [sourceText, setSourceText] = useState<string>("");
 	const [fullTranslation, setFullTranslation] = useState<string>("");
-	const [displayedTranslation, setDisplayedTranslation] = useState<string>("");
 	const [isTranslating, setIsTranslating] = useState(false);
 	const [noTextError, setNoTextError] = useState(false);
 	const [nosourceLanguagetError, setNosourceLanguagetError] = useState(false);
 
-	const currentIndexRef = useRef(0);
-	const animationFrameIdRef = useRef<number | null>(null);
-	const lastUpdateTimeRef = useRef(0);
-	const fullTextRef = useRef(fullTranslation);
+	const displayedTranslation = useTypeWriter(fullTranslation);
 
-	const CHARS_PER_TICK = 1;
-	const TIME_PER_CHAR_MS = 50;
+
 
 	const detectedLanguage = useCallback(() => {
 		if (sourceText.trim().length < 3) {
@@ -139,100 +135,7 @@ function App() {
 		}
 	}, [sourceText]);
 
-	useEffect(() => {
-		// --- Start of Effect for a new fullTranslation ---
-		console.log(`EFFECT RUNNING for fullTranslation: "${fullTranslation}"`);
-
-		fullTextRef.current = fullTranslation; // Ensure it's updated if fullTranslation itself changes
-
-		// 1. Immediately clear any ongoing animation from a previous fullTranslation
-		if (animationFrameIdRef.current !== null) {
-			cancelAnimationFrame(animationFrameIdRef.current);
-			animationFrameIdRef.current = null;
-			console.log("Cancelled previous animation frame");
-		}
-
-		// 2. Reset state for the new animation sequence
-		setDisplayedTranslation('');
-		currentIndexRef.current = 0;
-		lastUpdateTimeRef.current = 0;
-
-		// 3. Define the animation function for *this* fullTranslation
-		const typeCharacter = (timestamp: number) => {
-			// Read from the ref to get the fullTranslation relevant to this animation sequence
-			const currentFullText = fullTextRef.current;
-
-			// If fullTranslation became empty/null while this animation was scheduled, stop.
-			if (!currentFullText) {
-				if (animationFrameIdRef.current !== null) {
-					cancelAnimationFrame(animationFrameIdRef.current);
-					animationFrameIdRef.current = null;
-				}
-				return;
-			}
-
-			if (!lastUpdateTimeRef.current) {
-				lastUpdateTimeRef.current = timestamp;
-			}
-
-			const elapsed = timestamp - lastUpdateTimeRef.current;
-
-			if (elapsed > TIME_PER_CHAR_MS) {
-				// Check if we are already past the full length
-				if (currentIndexRef.current >= currentFullText.length) {
-					setDisplayedTranslation(currentFullText);
-					if (animationFrameIdRef.current !== null) {
-						cancelAnimationFrame(animationFrameIdRef.current);
-						animationFrameIdRef.current = null;
-					}
-					return;
-				}
-
-				const charToAdd = currentFullText.substring(
-					currentIndexRef.current,
-					currentIndexRef.current + CHARS_PER_TICK
-				);
-
-				currentIndexRef.current += CHARS_PER_TICK; // Increment for the NEXT tick
-
-				setDisplayedTranslation(prevDisplayedText => {
-					// console.log(`prev: "${prevDisplayedText}", adding: "${charToAdd}"`);
-					return prevDisplayedText + charToAdd;
-				});
-
-				lastUpdateTimeRef.current = timestamp;
-			}
-
-			// Schedule next frame if not done
-			if (currentIndexRef.current < currentFullText.length) {
-				animationFrameIdRef.current = requestAnimationFrame(typeCharacter);
-			} else {
-				// Animation is complete
-				setDisplayedTranslation(currentFullText); // Ensure final text is set
-				if (animationFrameIdRef.current !== null) {
-					cancelAnimationFrame(animationFrameIdRef.current);
-					animationFrameIdRef.current = null;
-				}
-			}
-		};
-
-		// 4. Start the animation if fullTranslation is present
-		if (fullTextRef.current && fullTextRef.current.length > 0) {
-			console.log(`Starting animation for: "${fullTextRef.current}"`);
-			lastUpdateTimeRef.current = 0;
-			animationFrameIdRef.current = requestAnimationFrame(typeCharacter);
-		} else {
-			setDisplayedTranslation(''); // Ensure display is empty if fullTranslation is empty
-		}
-
-		// 5. Cleanup function
-		return () => {
-			if (animationFrameIdRef.current !== null) {
-				cancelAnimationFrame(animationFrameIdRef.current);
-				animationFrameIdRef.current = null;
-			}
-		};
-	}, [fullTranslation, CHARS_PER_TICK, TIME_PER_CHAR_MS]); // Dependencies
+	 // Dependencies
 
 	const sourceLanguageChange = (value: SourceLanguageCode) => {
 		setNosourceLanguagetError(false);

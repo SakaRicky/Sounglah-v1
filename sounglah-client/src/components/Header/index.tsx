@@ -4,8 +4,8 @@ import logo from "../../sounglah-logo.svg";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
 	header: {
-		backgroundColor: "white",
-		color: theme.colors.gray[7],
+		backgroundColor: theme.colors.brown[2],
+		color: theme.colors.brown[5],
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "space-between",

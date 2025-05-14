@@ -29,7 +29,7 @@ const useStyles = createStyles(
 			flex: 1,
 			border: noTextError
 				? `2px solid ${theme.colors.red[5]}`
-				: `1px solid ${theme.colors.green[2]}`,
+				: `1px solid inherit`,
 
 			// Media query with value from theme
 			[`@media (min-width: ${theme.breakpoints.sm}px)`]: {
