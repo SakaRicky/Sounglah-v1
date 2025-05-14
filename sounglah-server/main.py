@@ -45,10 +45,10 @@ def post():
     return {"translate": {
         "srcLanguage": args["srcLanguage"],
         "targetLanguage": args["targetLanguage"],
-        "translatedText": results
+        "fullTranslation": results
     }}
 
 # api.add_resource(Translate, '/translate')
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    app.run(debug=True, threaded=True, host='0.0.0.0', port=5000)

@@ -1,11 +1,16 @@
 import React from "react";
 import { createStyles } from "@mantine/core";
+import bgPattern from "../../assets/images/Ndop_Patterns_yellow_brown.svg";
+
 
 const useStyles = createStyles(theme => ({
 	footer: {
-		background: theme.colors.brown[5],
-		color: "white",
+		color: theme.colors.brown[5],
 		marginTop: "auto",
+		backgroundImage: `url(${bgPattern})`,
+		backgroundRepeat: "repeat-x",
+		backgroundSize: "auto 100%",
+		height: "80px",
 
 		// Media query with value from theme
 		// [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
@@ -34,10 +39,6 @@ export const Footer = () => {
 
 	return (
 		<footer className={classes.footer}>
-			<div className={classes.container}>
-				<div>Build by Saka Ricky</div>
-				<div>All rights reserved &copy;</div>
-			</div>
 		</footer>
 	);
 };

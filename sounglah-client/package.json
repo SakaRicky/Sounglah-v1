@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@fortawesome/react-fontawesome": "^0.2.2",
 		"@mantine/core": "^4.1.4",
 		"@mantine/hooks": "^4.1.4",
 		"@testing-library/jest-dom": "^5.14.1",
@@ -13,11 +14,13 @@
 		"@types/react": "^18.0.0",
 		"@types/react-dom": "^18.0.0",
 		"axios": "^0.27.1",
+		"franc": "^6.2.0",
 		"langcheck": "^2.3.2",
 		"languagedetect": "^2.0.0",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-scripts": "5.0.1",
+		"react-spinners": "^0.17.0",
 		"sass": "^1.50.1",
 		"typescript": "^4.4.2",
 		"web-vitals": "^2.1.0"

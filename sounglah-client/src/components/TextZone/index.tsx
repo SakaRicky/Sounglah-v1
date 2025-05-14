@@ -1,10 +1,11 @@
-import { createStyles, Paper, Select } from "@mantine/core";
+import { createStyles, CSSObject, Paper, Select } from "@mantine/core";
 import React, { ChangeEvent } from "react";
-import { Language } from "../../types";
+import { Language, SourceLanguageCode, TargetLanguageCode } from "../../types";
+
 export interface TextZone {
 	type: "input" | "output";
 	sourceTextChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
-	sourceLanguageChange?: (value: string) => void;
+	sourceLanguageChange?: (value: SourceLanguageCode) => void;
 	translated?: string;
 	noTextError?: boolean;
 	nosourceLanguagetError?: boolean;
@@ -21,6 +22,8 @@ interface StyleProps {
 const useStyles = createStyles(
 	(theme, { noTextError, nosourceLanguagetError }: StyleProps) => ({
 		root: {
+			zIndex: 10,
+			backgroundColor: theme.colors.beige[0],
 			margin: "1rem 0",
 			width: "100%",
 			flex: 1,
@@ -39,10 +42,16 @@ const useStyles = createStyles(
 				? `2px solid ${theme.colors.red[5]}`
 				: "nine",
 		},
+		input: {
+			backgroundColor: theme.colors.beige?.[0] || '#F9F4EC',
+		},
+		dropdown: {
+			backgroundColor: theme.colors.beige?.[0] || '#F9F4EC',
+		},
 		textArea: {
 			height: "20vh",
 			borderRadius: "0.5rem",
-			outline: `2px solid ${theme.colors.gray[4]}`,
+			outline: `2px solid ${theme.colors.brown[5]}`,
 			border: "none",
 			width: "100%",
 			fontSize: "1.5rem",
@@ -67,7 +76,7 @@ const useStyles = createStyles(
 			color: "red",
 		},
 		translatedTextArea: {
-			border: `2px solid ${theme.colors.gray[4]}`,
+			border: `2px solid ${theme.colors.brown[5]}`,
 			borderRadius: "0.5rem",
 			height: "20vh",
 			marginTop: "1rem",
@@ -97,13 +106,12 @@ export const TextZone = ({
 	const { classes } = useStyles({ noTextError, nosourceLanguagetError });
 
 	const inputLanguages: Language[] = [
-		{ value: "fre", label: "French" },
-		{ value: "eng", label: "English" },
+		{ value: SourceLanguageCode.Français, label: "French" },
+		{ value: SourceLanguageCode.English, label: "English" },
 	];
 
 	const outPutLanguages: Language[] = [
-		{ value: "med", label: "Medumba" },
-		{ value: "dul", label: "Douala" },
+		{ value: TargetLanguageCode.Medumba, label: "Medumba" },
 	];
 
 	// used to decide if user can select target language
@@ -120,16 +128,19 @@ export const TextZone = ({
 					radius="sm"
 					onChange={sourceLanguageChange}
 					value={srcLanguage}
+					styles={{
+						input: classes.input as unknown as CSSObject,
+						dropdown: classes.dropdown as unknown as CSSObject,
+					}}
 				/>
 
 				<div className={classes.textArea}>
 					<textarea
-						placeholder={
-							noTextError ? "Select source language" : "Please enter some text"
-						}
+						placeholder="Type to translate"
 						required
 						onChange={sourceTextChange}
 						value={sourceText}
+						style={{ backgroundColor: "inherit" }}
 					/>
 				</div>
 			</Paper>
