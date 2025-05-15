@@ -1,4 +1,5 @@
 export { Header } from "./Header";
-export { TextZone } from "./TextZone";
+export { OutTextZone } from "./OutTextZone";
 export { Footer } from "./Footer";
+export { InputTextZone } from "./InputText";
 // export { TranslationBox } from "./TranslationBox";

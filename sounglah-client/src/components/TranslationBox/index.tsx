@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 import { Button, createStyles, MediaQuery } from '@mantine/core';
-import { TextZone } from '../TextZone';
 import { translate, Translate } from "../../services";
 import { ScaleLoader } from "react-spinners";
 import useLanguageDetection from '../../hooks/useLanguageDetection';
 import useTypeWriter from '../../hooks/useTypeWriter';
 import { RightArrow } from '../Arrows';
+import { InputTextZone } from '../InputText';
+import { OutTextZone } from '../OutTextZone';
 
 const useStyles = createStyles(theme => ({
     translationArea: {
@@ -103,8 +104,7 @@ const TranslationBox = () => {
     return (
         <div>
             <div className={classes.translationArea}>
-                <TextZone
-                    type="input"
+                <InputTextZone
                     sourceLanguageChange={handleSourceLanguageChange}
                     sourceTextChange={sourceTextChange}
                     noTextError={noTextError}
@@ -129,11 +129,8 @@ const TranslationBox = () => {
                         </MediaQuery>
                     </div>
                 )}
-                <TextZone
-                    type="output"
+                <OutTextZone
                     translated={displayedTranslation}
-                    srcLanguage={autoDetectedSourceLanguage}
-                    targetLanguage={autoDetectedSourceLanguage}
                 />
             </div>
             <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
