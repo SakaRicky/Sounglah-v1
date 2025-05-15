@@ -1,4 +1,3 @@
-import React from "react";
 import { createStyles } from "@mantine/core";
 import bgPattern from "../../assets/images/Ndop_Patterns_yellow_brown.svg";
 

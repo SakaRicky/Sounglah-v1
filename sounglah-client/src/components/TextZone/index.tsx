@@ -118,8 +118,10 @@ export const TextZone = ({
 	// will be useful when we can translate to more than 1 languages like Douala
 	const manyTargetLanguages = false;
 
+	console.log("noTextError: ", noTextError);
+
 	if (type === "input") {
-		return (
+		return (				
 			<Paper shadow="xl" radius="md" p="md" className={classes.root}>
 				<Select
 					className={classes.select}
@@ -143,6 +145,9 @@ export const TextZone = ({
 						style={{ backgroundColor: "inherit" }}
 					/>
 				</div>
+
+				{noTextError ? <p style={{ color: "red", marginBottom: 0 }}>Please enter some text</p> : ""}
+				
 			</Paper>
 		);
 	}
