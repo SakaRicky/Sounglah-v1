@@ -1,6 +1,5 @@
 import { createStyles } from "@mantine/core";
-import React from "react";
-import logo from "../../sounglah-logo.svg";
+import logo from "../../assets/images/sounglah-logo.svg";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
 	header: {
@@ -46,6 +45,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 			width: "100%",
 		},
 	},
+	image: {
+		width: "15rem",
+		// height: "40rem"
+	}
 }));
 
 export const Header = () => {
@@ -55,8 +58,7 @@ export const Header = () => {
 		<header className={classes.header}>
 			<div className={classes.container}>
 				<a href="/">
-					<img src={logo} alt="sounglah" />
-					SoungLah
+					<img src={logo} className={classes.image} alt="sounglah" />
 				</a>
 			</div>
 		</header>
