@@ -4,6 +4,7 @@ from flask_cors import CORS
 from transformers import AutoTokenizer
 from transformers import AutoModelForSeq2SeqLM
 import os
+from memory_profiler import profile # Import the decorator
 
 
 app = Flask(__name__, static_folder='frontend_build', static_url_path='')
@@ -31,9 +32,29 @@ translate_put_args.add_argument('srcLanguage', type=str, help="Source Language m
 translate_put_args.add_argument('targetLanguage', type=str, help="Target Language missing", required=True)
 translate_put_args.add_argument('text', type=str, help="Text to translate missing", required=True)
 
-model_checkpoint = "Helsinki-NLP/opus-mt-en-mul"
-tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
-model = AutoModelForSeq2SeqLM.from_pretrained("rickySaka/eng-med")
+# --- Global variables for model and tokenizer ---
+tokenizer_global = None
+model_global = None
+
+# --- Decorate the function responsible for loading the model ---
+@profile # Add this decorator
+def load_my_model():
+    global tokenizer_global, model_global # So we can assign to the globals
+    app.logger.info("Attempting to load model and tokenizer...")
+    try:
+        model_checkpoint = "Helsinki-NLP/opus-mt-en-mul" # Or your specific checkpoint
+        model_path = "rickySaka/eng-med"
+
+        tokenizer_global = AutoTokenizer.from_pretrained(model_checkpoint)
+        model_global = AutoModelForSeq2SeqLM.from_pretrained(model_path)
+        app.logger.info("Model and tokenizer loaded successfully into globals.")
+    except Exception as e:
+        app.logger.error(f"Error loading model: {e}", exc_info=True)
+        # Handle error appropriately, maybe exit or set a flag
+
+# --- Call the loading function once at startup (outside any request context) ---
+# This is crucial: load_my_model() will be profiled when the script starts.
+load_my_model()
 
 
 @app.route("/ping", methods=["GET"])
