@@ -1,7 +1,9 @@
 // import { NewStudent, Student } from "types";
 import axios from "axios";
 
-const baseURL = "http://10.0.0.73:5000/";
+// const baseURL = "http://10.0.0.73:5000/api";
+const baseURL = process.env.REACT_APP_API_BASE_URL || "/api";
+console.log("🚀 ~ baseURL:", baseURL);
 
 export interface TranslateProps {
 	srcLanguage: string;
@@ -22,7 +24,7 @@ export interface Translate {
 export const translate = async ({ srcLanguage, text }: TranslateProps) => {
 
 	try {
-		const response = await axios.post<TranslateResponse>(`${baseURL}translate`, {
+		const response = await axios.post<TranslateResponse>(`${baseURL}/translate`, {
 			srcLanguage: srcLanguage,
 			targetLanguage: "med",
 			text: text,

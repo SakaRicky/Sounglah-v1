@@ -1,4 +1,3 @@
-import "./App.scss";
 import { createStyles } from "@mantine/core";
 import { Footer, Header } from "./components";
 import TranslationBox from "./components/TranslationBox";
@@ -23,6 +22,18 @@ const useStyles = createStyles(theme => ({
 			lineHeight: 1.4,
 			margin: "0.5rem",
 		},
+		"::before": {
+			content: '""',
+			position: "fixed",
+			top: 0, 
+			left: 0,
+			width: "100vw",
+			height: "100vh",
+			backgroundImage: `url('./assets/images/body_pattern.png')`,
+			backgroundRepeat: "repeat",
+			backgroundSize: "contain",
+			opacity: 0.03,
+		}
 	},
 
 	main: {
@@ -56,7 +67,7 @@ function App() {
 						Just give it a source text and choose the language you want it to be
 						translated.
 					</p>
-					
+
 					<TranslationBox />
 				</div>
 			</main>

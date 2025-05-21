@@ -30,7 +30,10 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"lint": "eslint src/**/*.ts src/**/*.tsx"
+		"lint": "eslint src/**/*.ts src/**/*.tsx",
+		"delete-build": "rimraf build && rimraf ../sounglah-server/frontend_build",
+		"copy:client-to-server": "cpr build ../sounglah-server/frontend_build -f",
+		"clean-build": "npm run delete-build && npm run build && npm run copy:client-to-server"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -53,7 +56,9 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.20.0",
+		"cpr": "^3.0.1",
 		"eslint": "^8.13.0",
-		"eslint-plugin-react": "^7.29.4"
+		"eslint-plugin-react": "^7.29.4",
+		"rimraf": "^6.0.1"
 	}
 }

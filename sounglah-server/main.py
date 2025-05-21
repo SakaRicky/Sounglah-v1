@@ -1,12 +1,30 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_restful import Api, reqparse
 from flask_cors import CORS
 from transformers import AutoTokenizer
 from transformers import AutoModelForSeq2SeqLM
+import os
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_folder='frontend_build', static_url_path='')
 api = Api(app)
-CORS(app)
+CORS(
+    app,
+    origins=[
+        "http://localhost:3000", # Your React frontend origin
+        "http://127.0.0.1:3000"  # Alternative for localhost
+    ],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Crucially includes POST and OPTIONS
+    allow_headers=[
+        "Content-Type",         # Essential if your POST sends application/json
+        "Authorization",        # Add if you use Authorization headers
+        "X-Requested-With"      # A common AJAX header, good to include
+        # Add any other custom headers your frontend sends for /api/translate
+    ],
+    supports_credentials=True, # If your frontend expects to send/receive cookies or auth
+    expose_headers=["Content-Length"] # Example, if frontend needs to read this
+)
+
 
 translate_put_args = reqparse.RequestParser()
 translate_put_args.add_argument('srcLanguage', type=str, help="Source Language missing", required=True)
@@ -17,11 +35,12 @@ model_checkpoint = "Helsinki-NLP/opus-mt-en-mul"
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 model = AutoModelForSeq2SeqLM.from_pretrained("rickySaka/eng-med")
 
-@app.route("/translate", methods=["GET"])
+
+@app.route("/ping", methods=["GET"])
 def get():
     return "The server can now translate."
 
-@app.route("/translate", methods=["POST"])
+@app.route("/api/translate", methods=["POST"])
 def post():
     args = translate_put_args.parse_args()
     print(f"args: {args}") # Use f-string to embed the dictionary
@@ -48,7 +67,20 @@ def post():
         "fullTranslation": results
     }}
 
-# api.add_resource(Translate, '/translate')
+# --- Serve React App ---
+# For any route not caught by an API endpoint, serve the React app's index.html.
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react_app(path):
+    # Construct the full path to the potential file in the frontend_build directory
+    full_path_to_file = os.path.join(app.static_folder, path)
+
+    if path != "" and os.path.exists(full_path_to_file) and os.path.isfile(full_path_to_file):
+        # If the path exists as a static file in 'frontend_build' (e.g., /manifest.json, /static/js/main.js), serve it
+        return send_from_directory(app.static_folder, path)
+    else:
+        # Otherwise, serve the 'index.html' for client-side routing (e.g., /about, /profile)
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, threaded=True, port=5000)

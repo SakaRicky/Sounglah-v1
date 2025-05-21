@@ -1,6 +1,4 @@
-import { createStyles, CSSObject, Paper, Select } from "@mantine/core";
-import React, { ChangeEvent } from "react";
-import { Language, SourceLanguageCode, TargetLanguageCode } from "../../types";
+import { createStyles, Paper } from "@mantine/core";
 
 export interface OutputTextZone {
 	translated?: string;
