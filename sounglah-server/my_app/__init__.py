@@ -46,8 +46,8 @@ def create_app(config_object=None):
     #     app.config.from_object(config_object)
     # else:
     #     app.config.from_object(config.Develepmont) # Assuming a default config
-    CORS(app)
-
+    CORS(app, origins="*")
+    
     if models_loaded_successfully:
         app.extensions["ml_tokenizer"] = tokenizer_instance
         app.extensions["ml_model"] = model_instance

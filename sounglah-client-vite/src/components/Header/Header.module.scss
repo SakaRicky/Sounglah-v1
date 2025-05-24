@@ -1,0 +1,46 @@
+@use "../../styles/breakpoints" as *;
+@use "../../styles/colors" as *;
+@use "../../styles/spacing" as *;
+
+.header {
+  background-color: var(--mantine-color-brown-2);
+  color: var(--mantine-color-brown-5);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xl); 
+  min-height: 3rem;
+  box-shadow: var(--mantine-shadow-md); 
+
+  @media (max-width: var(--mantine-breakpoint-sm)) {
+  }
+
+  a {
+    font-weight: bolder;
+    font-style: italic;
+    font-size: 1.5rem; 
+    text-decoration: none;
+    color: inherit; 
+    display: flex;
+    align-items: center;
+    width: 20%;
+    &:hover {
+      color: #000; 
+    }
+  }
+}
+
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.image {
+  width: 4rem;
+}

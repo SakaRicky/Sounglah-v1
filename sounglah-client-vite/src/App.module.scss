@@ -1,0 +1,55 @@
+@use "./styles/breakpoints" as *;
+@use "./styles/colors" as *;
+@use "./styles/spacing" as *;
+
+.body {
+  color: var(--mantine-color-gray-8);
+  background-color: var(--mantine-color-beige-3);
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  h1 {
+    text-align: center;
+    margin: 1.2rem 0;
+  }
+
+  p {
+    text-align: center;
+    line-height: 1.4;
+    margin: 0.5rem;
+  }
+
+  &::before {
+    content: '""';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url('/body_pattern.png');
+
+    background-repeat: repeat;
+    background-size: contain;
+    opacity: 0.03;
+    z-index: -1;
+    pointer-events: none;
+  }
+}
+
+.main {
+  padding: 1rem;
+}
+
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+}
