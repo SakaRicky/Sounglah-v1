@@ -9,11 +9,6 @@ const langMap: { [key: string]: SourceLanguageCode } = {
     fra: SourceLanguageCode.Français,
 };
 
-// export interface DetectLanguageProps {
-//     sourceText: string;
-//     sourceLanguageChange: SourceLanguageCode;
-// }
-
 const useLanguageDetection = (sourceText: string) => {
     const [autoDetectedSourceLanguage, setDetectedSourceLanguage] = useState<SourceLanguageCode>(SourceLanguageCode.Undetermined);
 
@@ -36,7 +31,7 @@ const useLanguageDetection = (sourceText: string) => {
         if (langCode !== SourceLanguageCode.Undetermined) {
             setDetectedSourceLanguage(langCode);
         }
-    }, [sourceText]);
+    }, [sourceText, detectedLanguage]);
 
     const handleSourceLanguageChange = (value: SourceLanguageCode) => {
         setDetectedSourceLanguage(value);

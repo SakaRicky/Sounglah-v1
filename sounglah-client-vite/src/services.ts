@@ -32,9 +32,9 @@ export const translate = async ({ srcLanguage, text }: TranslateProps) => {
 		
 
 		return response.data.translate;
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.log(error);
 
-		throw new Error("Error in translate", error);
+		throw new Error(`Error in translate ${error}`);
 	}
 };

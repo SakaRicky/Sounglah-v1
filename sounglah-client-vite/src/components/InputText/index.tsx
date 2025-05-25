@@ -24,7 +24,8 @@ export const InputTextZone = ({ sourceText, noTextError, srcLanguage, sourceLang
     const paperClassName = noTextError ? `${classes.paper } ${classes.paperError}` : classes.paper ;
 
     const handleSelectChange = (value: string | null, option: ComboboxItem) => {
-        if (sourceLanguageChange && value !== null) {
+
+        if (sourceLanguageChange && value !== null && option.value === value) {
             sourceLanguageChange(value as SourceLanguageCode);
         }
     };

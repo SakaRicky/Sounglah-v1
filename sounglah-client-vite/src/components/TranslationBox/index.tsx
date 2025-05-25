@@ -11,6 +11,7 @@ import { OutTextZone } from '../OutTextZone';
 import classes from './TranslationBox.module.scss';
 import { RightArrow } from '../Arrows';
 import { Box, Button } from '@mantine/core';
+import AppButton from '../atoms/Button/Button';
 
 export const TranslationBox = () => {
     const [sourceText, setSourceText] = useState<string>("");
@@ -72,18 +73,9 @@ export const TranslationBox = () => {
                     <ScaleLoader width={"10px"} />
                 ) : (
                     <div>
-                        <Button
-                            onClick={fetchTranslation}
-                            className={classes.button}
-                            hiddenFrom="md"
-                            radius="md" 
-                            display="block" 
-                            p="0.25rem 2rem" 
-                            fz="lg" 
-                            w="10rem"
-                        >
+                        <AppButton variant='primary' hiddenFrom='md' onClick={fetchTranslation}>
                             Translate
-                        </Button>
+                        </AppButton>
                         <Box
                             visibleFrom="md"
                         >
