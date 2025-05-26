@@ -1,29 +1,23 @@
 import { Footer, Header, TranslationBox } from "./components";
-
-// Import the CSS module file
 import classes from './App.module.scss';
+import Hero from "@/pages/Hero";
+import { Title } from "@mantine/core";
 
-// Remove useStyles definition
-// const useStyles = createStyles(...);
 
 function App() {
-	// Remove useStyles hook call
-	// const { classes } = useStyles();
 
 	return (
-		// Apply class from module
 		<div className={classes.body}>
 			<Header />
-			{/* Apply class from module */}
+			
 			<main className={classes.main}>
-				{/* Apply class from module */}
-				<div className={classes.container}>
-					<h1>SoungLah Translator</h1>
+				<Hero />
+				<div className={classes.container} style={{marginTop: "2rem"}}>
+					<Title ta="center" fz="3rem" fw="800">SoungLah Translator</Title>
 					<p>
 						Just give it a source text and choose the language you want it to be
 						translated.
 					</p>
-					{/* TranslationBox component is assumed to be already converted */}
 					<TranslationBox />
 				</div>
 			</main>
@@ -32,4 +26,4 @@ function App() {
 	);
 }
 
-export default App; // Export as default
+export default App;

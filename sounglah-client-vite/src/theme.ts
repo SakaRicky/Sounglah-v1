@@ -1,12 +1,14 @@
 import type { MantineThemeOverride } from "@mantine/core";
 
+
 export const theme: MantineThemeOverride = {
   defaultRadius: 0,
+  fontFamily: "Ancizar Serif, sans-serif, system-ui",
 
   colors: {
     beige: [
-      "#F9F4EC", "#F6F0E6", "#F1E8DA", "#EADFCF", "#E1D4C1", "#D8C7B1", // Your original 6 shades
-      "#C5B6A2", "#B0A08B", "#9A8A75", "#857560" // <-- Placeholder/Example shades to make it 10
+      "#FFF4E5", "#FFF2DF", "#FFEFD6", "#FAEBD4", "#FFE8C5", "#F7E1BD", 
+      "#FFE0AD", "#FFDA9E", "#FAD394", "#F4CB89"
     ],
     brown: [
       "#EFE8DD", "#E2D4C0", "#D2BFA1", "#BF9F79", "#A6795D", "#4E3B2A", // Your original 6 shades
@@ -40,9 +42,10 @@ export const theme: MantineThemeOverride = {
   },
   breakpoints: {
     xs: '36em',  // 576px
-    sm: '48em',  // 768px
-    md: '62em',  // 992px
-    lg: '75em',  // 1200px
-    xl: '88em',  // 1408px
+    sm: '36em',  // 768px
+    md: '48em',  // 992px
+    lg: '62em',  // 1200px
+    xl: '75em',  // 1408px
+    xxl: '88em',  // 1408px
   }
 };

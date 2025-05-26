@@ -1,12 +1,10 @@
-@use "../../../styles/breakpoints" as *;
-@use "../../../styles/colors" as *;
-@use "../../../styles/spacing" as *;
+@use "@/styles/breakpoints" as *;
+@use "@/styles/colors" as *;
+@use "@/styles/spacing" as *;
 
 .btn {
   display: block;
   cursor: pointer;
-  width: 50%;
-  max-width: 200px;
   margin: 1rem auto; 
   color: #fff;
   font-size: 1.2rem; 

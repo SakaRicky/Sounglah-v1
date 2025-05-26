@@ -1,4 +1,5 @@
 import classes from './Header.module.scss';
+import logo from '@/assets/images/sounglah-logo.svg';
 
 export const Header = () => {
 
@@ -6,7 +7,7 @@ export const Header = () => {
     <header className={classes.header}>
       <div className={classes.container}>
         <a href="/">
-          <img src="/sounglah-logo.svg" className={classes.image} alt="sounglah" />
+          <img src={logo} className={classes.image} alt="sounglah" />
           Sounglah
         </a>
       </div>

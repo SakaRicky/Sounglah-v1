@@ -1,10 +1,12 @@
-@use "./styles/breakpoints" as *;
-@use "./styles/colors" as *;
-@use "./styles/spacing" as *;
+@use "@/styles/breakpoints" as *;
+@use "@/styles/colors" as *;
+@use "@/styles/spacing" as *;
+@use "@/styles/utilities" as *;
 
 .body {
   color: var(--mantine-color-gray-8);
-  background-color: var(--mantine-color-beige-3);
+  background-color: var(--mantine-color-beige-2);
+
 
   min-height: 100vh;
   display: flex;
@@ -12,12 +14,10 @@
   overflow-x: hidden;
 
   h1 {
-    text-align: center;
     margin: 1.2rem 0;
   }
 
   p {
-    text-align: center;
     line-height: 1.4;
     margin: 0.5rem;
   }
@@ -42,14 +42,4 @@
 
 .main {
   padding: 1rem;
-}
-
-.container {
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  @media (max-width: $breakpoint-sm) {
-    width: 100%;
-  }
 }

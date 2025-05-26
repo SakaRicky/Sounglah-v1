@@ -1,6 +1,7 @@
-@use "../../styles/breakpoints" as *;
-@use "../../styles/colors" as *;
-@use "../../styles/spacing" as *;
+@use "@/styles/breakpoints" as *;
+@use "@/styles/colors" as *;
+@use "@/styles/spacing" as *;
+@use "@/styles/utilities" as *;
 
 .header {
   background-color: var(--mantine-color-brown-2);
@@ -25,19 +26,6 @@
     display: flex;
     align-items: center;
     width: 20%;
-    &:hover {
-      color: #000; 
-    }
-  }
-}
-
-.container {
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  @media (max-width: $breakpoint-sm) {
-    width: 100%;
   }
 }
 

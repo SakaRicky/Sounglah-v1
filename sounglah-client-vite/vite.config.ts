@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import eslint from 'vite-plugin-eslint';
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -20,6 +21,11 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   build: {
     outDir: '../sounglah-server/frontend_build', // This is the key change!

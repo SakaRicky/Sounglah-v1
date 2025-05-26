@@ -10,7 +10,7 @@ import { OutTextZone } from '../OutTextZone';
 
 import classes from './TranslationBox.module.scss';
 import { RightArrow } from '../Arrows';
-import { Box, Button } from '@mantine/core';
+import { Box } from '@mantine/core';
 import AppButton from '../atoms/Button/Button';
 
 export const TranslationBox = () => {
@@ -60,7 +60,7 @@ export const TranslationBox = () => {
     };
 
     return (
-        <div> {/* You could consider replacing this with a Mantine Container or Box */}
+        <div>
             <div className={classes.translationArea}>
                 <InputTextZone
                     sourceLanguageChange={handleSourceLanguageChange}
@@ -73,9 +73,11 @@ export const TranslationBox = () => {
                     <ScaleLoader width={"10px"} />
                 ) : (
                     <div>
-                        <AppButton variant='primary' hiddenFrom='md' onClick={fetchTranslation}>
-                            Translate
-                        </AppButton>
+                        <Box hiddenFrom='md'>
+                            <AppButton variant='primary' onClick={fetchTranslation}>
+                                Translate
+                            </AppButton>
+                        </Box>
                         <Box
                             visibleFrom="md"
                         >
@@ -87,17 +89,14 @@ export const TranslationBox = () => {
                     translated={displayedTranslation}
                 />
             </div>
-            <Button
-                visibleFrom='md'
-                radius="md" 
-                display="block" 
-                p="0.25rem 2rem" 
-                fz="lg" w="20rem" 
-                className={classes.button} 
-                onClick={fetchTranslation}
-            >
-                Translate
-            </Button>
+            <Box visibleFrom='md' style={{display: "flex", justifyContent: "center"}}>
+                <AppButton
+                    variant='primary'
+                    onClick={fetchTranslation}
+                >
+                    Translate
+                </AppButton>
+            </Box>
         </div>
     );
 };
