@@ -5,7 +5,8 @@ from . import model_loader
 import logging
 import os
 import langid
-
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
 
 # Configure logging for the app if not already done
 logging.basicConfig(level=logging.INFO)
@@ -34,6 +35,8 @@ def _initialize_models():
 
 _initialize_models()
 
+db = SQLAlchemy()
+
 def create_app(config_object=None):
     """Application factory function"""
     app = Flask(__name__,
@@ -41,7 +44,36 @@ def create_app(config_object=None):
                 static_folder="../frontend_build",
                 static_url_path='')
     
+    load_dotenv()
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
+    # Optional but recommended: Add a check to ensure the variable was set
+    if app.config['SQLALCHEMY_DATABASE_URI'] is None:
+        raise ValueError("DATABASE_URL environment variable is not set!")
+
+
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # 3. Initialize the db instance with the app
+    db.init_app(app)
+    
     app.logger.info("Flask app instance created.")
+
+    # --- Add the shell context processor here ---
+    @app.shell_context_processor
+    def make_shell_context():
+        # Import your models here to make them available in the shell
+        # Import them within this function to avoid potential circular import issues
+        # if your models.py needs to import db from __init__.py
+        from my_app.models import Sentence, SentenceRecording # Adjust import if your models are elsewhere
+        app.logger.info("Models and db available in shell context.") # Optional confirmation
+        return {
+            'db': db, # Make the db object available as 'db' in the shell
+            'Sentence': Sentence, # Make the Sentence model available as 'Sentence'
+            'SentenceRecording': SentenceRecording # Make the SentenceRecording model available as 'SentenceRecording'
+            # Add any other models you want easy access to
+        }
 
     # --- Configuration ---
     # Example: Load default config or from a passed object

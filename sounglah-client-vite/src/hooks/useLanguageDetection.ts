@@ -17,7 +17,6 @@ const useLanguageDetection = (sourceText: string) => {
         }
         
         const detectedLangCode = await detectLangFromText(sourceText);
-        console.log("🚀 ~ detectedLanguage ~ detectedLangCode:", detectedLangCode)
 
         setDetectedSourceLanguage(langMap[detectedLangCode] || SourceLanguageCode.Undetermined);
 
