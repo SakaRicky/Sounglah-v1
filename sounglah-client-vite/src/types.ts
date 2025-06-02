@@ -3,13 +3,16 @@ export interface Language {
 	label: string;
 }
 
-export enum SourceLanguageCode {
-	English = "eng",
-	Français = "fra",
-	Undetermined = "und"
-}
+export type SourceLanguageCode = "en" | "fr" | "und";
+export type TargetLanguageCode = "med";
 
-export enum TargetLanguageCode {
-	Medumba = "med",
-}
+export const SourceLanguageCode = {
+  English: "en",
+  Français: "fr",
+  Undetermined: "und",
+} as const;
+
+export const TargetLanguageCode = {
+  Medumba: "med",
+} as const;
 

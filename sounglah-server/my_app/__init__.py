@@ -1,9 +1,11 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request, jsonify
 from flask_restful import reqparse
 from flask_cors import CORS
 from . import model_loader
 import logging
 import os
+import langid
+
 
 # Configure logging for the app if not already done
 logging.basicConfig(level=logging.INFO)
@@ -13,6 +15,7 @@ translate_put_args = reqparse.RequestParser()
 translate_put_args.add_argument('srcLanguage', type=str, help="Source Language missing", required=True)
 translate_put_args.add_argument('targetLanguage', type=str, help="Target Language missing", required=True)
 translate_put_args.add_argument('text', type=str, help="Text to translate missing", required=True)
+translate_put_args.add_argument('text_to_detect', type=str, help="Text to detect.", required=True)
 
 # --- Global variables for model and tokenizer (if loaded once per app instance) ---
 tokenizer_instance = None
@@ -58,6 +61,22 @@ def create_app(config_object=None):
     @app.route("/ping", methods=["GET"])
     def get():
         return "The server can now translate."
+    
+    @app.route("/api/detectlang", methods=["POST"])
+    def getDetectedLanguage():
+        data = request.get_json()
+
+        text = data.get('text_to_detect_lang', '')
+
+        # Now run langid
+        lang, confidence = langid.classify(text)
+
+        print(f"Text: {text} lang: {lang} Confidence {confidence:.2f})")
+
+        return jsonify({
+            'language': lang,
+            'confidence': confidence
+        })
 
     @app.route("/api/translate", methods=["POST"])
     def post():

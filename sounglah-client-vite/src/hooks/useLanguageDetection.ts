@@ -1,42 +1,43 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SourceLanguageCode } from '../types';
-import { franc } from 'franc';
-
-const SUPPORTED_INPUT_LANGUAGES = ['eng', 'fra'];
+import { detectLangFromText } from '@/services';
+import { debounce } from 'lodash';
 
 const langMap: { [key: string]: SourceLanguageCode } = {
-    eng: SourceLanguageCode.English,
-    fra: SourceLanguageCode.Français,
+    en: SourceLanguageCode.English,
+    fr: SourceLanguageCode.Français,
 };
 
 const useLanguageDetection = (sourceText: string) => {
     const [autoDetectedSourceLanguage, setDetectedSourceLanguage] = useState<SourceLanguageCode>(SourceLanguageCode.Undetermined);
 
-    const detectedLanguage = useCallback(() => {
+    const detectedLanguage = useCallback(async () => {
         if (sourceText.trim().length < 3) {
             return SourceLanguageCode.Undetermined;
         }
+        
+        const detectedLangCode = await detectLangFromText(sourceText);
+        console.log("🚀 ~ detectedLanguage ~ detectedLangCode:", detectedLangCode)
 
-        const langCode = franc(sourceText, {
-            minLength: 3,
-            only: SUPPORTED_INPUT_LANGUAGES
-        });
-
-        return langMap[langCode] || SourceLanguageCode.Undetermined;
+        setDetectedSourceLanguage(langMap[detectedLangCode] || SourceLanguageCode.Undetermined);
 
     }, [sourceText]);
 
+    const debouncedDetectLanguage = debounce(detectedLanguage, 500);
+
     useEffect(() => {
-        const langCode = detectedLanguage();
-        if (langCode !== SourceLanguageCode.Undetermined) {
-            setDetectedSourceLanguage(langCode);
-        }
-    }, [sourceText, detectedLanguage]);
+        debouncedDetectLanguage();
+
+        return () => {
+            debouncedDetectLanguage.cancel();
+        };
+    }, [sourceText, detectedLanguage, debouncedDetectLanguage]);
 
     const handleSourceLanguageChange = (value: SourceLanguageCode) => {
         setDetectedSourceLanguage(value);
     };
-    return {autoDetectedSourceLanguage, handleSourceLanguageChange};
+
+    return { autoDetectedSourceLanguage, handleSourceLanguageChange };
 };
 
 export default useLanguageDetection;

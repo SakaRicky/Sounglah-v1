@@ -1,9 +1,32 @@
 // import { NewStudent, Student } from "types";
 import axios from "axios";
+import type { SourceLanguageCode } from "./types";
 
 // const baseURL = "http://10.0.0.73:5000/api";
 const baseURL = import.meta.env.VITE_API_BASE_URL || "/api";
 console.log("🚀 ~ baseURL:", baseURL);
+
+export const SUPPORTED_INPUT_LANGUAGES = ['en', 'fr'];
+
+export interface LangDetectResponse {
+	language: SourceLanguageCode;
+	confidence: string;
+}
+
+export const detectLangFromText = async (textToDetectLang: string): Promise<string> => {
+
+	try {
+		const response = await axios.post<LangDetectResponse>(`${baseURL}/detectlang`, {
+			text_to_detect_lang: textToDetectLang,
+		});
+		
+		return response.data.language;
+	} catch (error: unknown) {
+		console.log(error);
+
+		throw new Error(`Error in translate ${error}`);
+	}
+};
 
 export interface TranslateProps {
 	srcLanguage: string;
@@ -15,7 +38,7 @@ export interface TranslateResponse {
 }
 
 export interface Translate {
-	srcLanguage: string;
+	language: SourceLanguageCode;
 	targetLanguage: string;
 	srcText: string;
 	fullTranslation: string[];

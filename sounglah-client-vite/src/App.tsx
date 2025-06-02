@@ -12,7 +12,7 @@ function App() {
 			
 			<main className={classes.main}>
 				<Hero />
-				<div className={classes.container} style={{marginTop: "2rem"}}>
+				<div className={classes.container} style={{marginTop: "4rem"}}>
 					<Title ta="center" fz="3rem" fw="800">SoungLah Translator</Title>
 					<p>
 						Just give it a source text and choose the language you want it to be
