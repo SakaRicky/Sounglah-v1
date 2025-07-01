@@ -18,7 +18,7 @@ ENV TRANSFORMERS_CACHE=/app/huggingface_cache
 
 # 1. Install only the libraries needed to download the model.
 #    This leverages Docker's layer caching for efficiency.
-RUN pip install --no-cache-dir transformers==4.24.0 torch --extra-index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir transformers==4.24.0 torch sentencepiece --extra-index-url https://download.pytorch.org/whl/cpu
 
 # 2. Run a Python script to download the model and tokenizer.
 #    This will save them to the cache directory defined by HF_HOME.
