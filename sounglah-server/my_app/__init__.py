@@ -16,7 +16,7 @@ translate_put_args = reqparse.RequestParser()
 translate_put_args.add_argument('srcLanguage', type=str, help="Source Language missing", required=True)
 translate_put_args.add_argument('targetLanguage', type=str, help="Target Language missing", required=True)
 translate_put_args.add_argument('text', type=str, help="Text to translate missing", required=True)
-translate_put_args.add_argument('text_to_detect', type=str, help="Text to detect.", required=True)
+# translate_put_args.add_argument('text_to_detect', type=str, help="Text to detect.", required=True)
 
 # --- Global variables for model and tokenizer (if loaded once per app instance) ---
 tokenizer_instance = None
