@@ -6,8 +6,6 @@
 app = 'sounglah-server-restless-dream-7195'
 primary_region = 'sea'
 
-[build]
-
 [http_service]
   internal_port = 8080
   force_https = true
