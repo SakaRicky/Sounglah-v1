@@ -1,4 +1,4 @@
-# Use a slim Python image (e.g., 3.10 is a good balance for many ML libraries)
+# Use a slim Python image
 FROM python:3.10-slim-buster
 
 # Set the working directory in the container
@@ -7,27 +7,28 @@ WORKDIR /app
 # Ensure non-buffered stdout for real-time logs
 ENV PYTHONUNBUFFERED 1
 
-# --- NEW: Set environment variables to control the Hugging Face cache location ---
-# This tells the 'transformers' library to save models inside our /app directory
+# Set environment variables to control the Hugging Face cache location
 ENV HF_HOME=/app/huggingface_cache
 ENV HF_DATASETS_CACHE=/app/huggingface_cache
 ENV TRANSFORMERS_CACHE=/app/huggingface_cache
 
-# --- NEW: Pre-bake the model into the image ---
-# This happens ONCE during the `fly deploy` build process.
-
-# 1. Install only the libraries needed to download the model.
-#    This leverages Docker's layer caching for efficiency.
+# --- Pre-bake the model AND the tokenizer ---
+# 1. Install dependencies needed for the download
 RUN pip install --no-cache-dir transformers==4.24.0 torch sentencepiece --extra-index-url https://download.pytorch.org/whl/cpu
 
-# 2. Run a Python script to download the model and tokenizer.
-#    This will save them to the cache directory defined by HF_HOME.
+# 2. Run a Python script to download BOTH the required tokenizer and the required model
 RUN python -c "from transformers import AutoModelForSeq2SeqLM, AutoTokenizer; \
+               \
+               tokenizer_path = 'Helsinki-NLP/opus-mt-en-mul'; \
                model_path = 'rickySaka/eng-med'; \
-               print(f'---> Downloading and caching model and tokenizer for {model_path}...'); \
-               AutoTokenizer.from_pretrained(model_path); \
+               \
+               print(f'---> Downloading and caching tokenizer: {tokenizer_path}...'); \
+               AutoTokenizer.from_pretrained(tokenizer_path); \
+               print('---> Tokenizer download complete.'); \
+               \
+               print(f'---> Downloading and caching model: {model_path}...'); \
                AutoModelForSeq2SeqLM.from_pretrained(model_path); \
-               print('---> Download complete.')"
+               print('---> Model download complete.')"
 
 # --- The rest of your Dockerfile remains the same ---
 
@@ -42,7 +43,4 @@ COPY . .
 EXPOSE 8080
 
 # Command to run your application using Gunicorn
-# !! IMPORTANT !! Based on your `__init__.py` file, your app factory is `create_app()`.
-# You should use `my_app:create_app()` if your module is named `my_app`.
-# If your main file is `main.py` and it contains `app = create_app()`, then `main:app` is correct.
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--threads", "4", "--timeout", "120", "my_app:create_app()"]
